@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>S. Shiva Sai Kumar – Data Engineering Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --gold: #d4a853;
+    --gold-light: #f0c97a;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --accent: #4f8ef7;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 5%;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── HERO ─────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 0 5%;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(212,168,83,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 10% 80%, rgba(79,142,247,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-content { position: relative; max-width: 800px; }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+  .hero-name span { color: var(--gold); }
+  .hero-title {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+  .hero-meta {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+  .hero-meta-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .hero-meta-item .dot { color: var(--gold); }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    margin-top: 2.5rem;
+    padding: 0.85rem 2rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1s forwards;
+  }
+  .hero-cta:hover { background: var(--gold); color: var(--bg); }
+
+  .hero-years {
+    position: absolute; right: 5%; top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.1s forwards;
+  }
+  .hero-years .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    font-weight: 900;
+    color: rgba(212,168,83,0.12);
+    line-height: 1;
+  }
+  .hero-years .big-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ─── SECTION COMMON ───────────────────────────────────── */
+  section { padding: 7rem 5%; }
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 3.5rem;
+    position: relative;
+  }
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 3rem; height: 2px;
+    background: var(--gold);
+    margin-top: 1rem;
+  }
+  .divider { height: 1px; background: var(--border); margin: 0 5%; }
+
+  /* ─── ABOUT ─────────────────────────────────────────────── */
+  #about { background: var(--surface); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .about-text { font-size: 1.05rem; color: #b0b0cc; line-height: 1.9; }
+  .about-text p + p { margin-top: 1.2rem; }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .stat-box {
+    padding: 1.8rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+  /* ─── EXPERIENCE ────────────────────────────────────────── */
+  #experience { background: var(--bg); }
+  .exp-timeline { position: relative; }
+  .exp-timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .exp-item {
+    padding-left: 3rem;
+    margin-bottom: 4rem;
+    position: relative;
+  }
+  .exp-item::before {
+    content: '';
+    position: absolute; left: -5px; top: 0.6rem;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(212,168,83,0.5);
+  }
+  .exp-header {
+    display: flex; flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .exp-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .exp-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+  .exp-company {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 1.2rem;
+  }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    position: relative;
+    padding-left: 1.4rem;
+    color: #9090b8;
+    font-size: 0.95rem;
+    margin-bottom: 0.55rem;
+    line-height: 1.7;
+  }
+  .exp-bullets li::before {
+    content: '›';
+    position: absolute; left: 0;
+    color: var(--gold);
+    font-weight: bold;
+  }
+
+  /* ─── SKILLS ────────────────────────────────────────────── */
+  #skills { background: var(--surface); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .skill-card {
+    padding: 1.8rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .skill-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .skill-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag {
+    padding: 0.3rem 0.8rem;
+    background: rgba(212,168,83,0.07);
+    border: 1px solid rgba(212,168,83,0.2);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.73rem;
+    color: #c0c0e0;
+    border-radius: 2px;
+  }
+
+  /* ─── PROJECTS ──────────────────────────────────────────── */
+  #projects { background: var(--bg); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .project-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .project-card::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .project-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(212,168,83,0.08);
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .project-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  .project-desc { font-size: 0.92rem; color: #9090b8; line-height: 1.75; margin-bottom: 1.5rem; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .project-tech span {
+    padding: 0.25rem 0.7rem;
+    background: rgba(79,142,247,0.08);
+    border: 1px solid rgba(79,142,247,0.2);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #8aabf0;
+    border-radius: 2px;
+  }
+
+  /* ─── EDUCATION & CERTIFICATIONS ────────────────────────── */
+  #education { background: var(--bg); }
+  .edu-cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+  .edu-item, .cert-item {
+    padding: 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .edu-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .edu-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+  .edu-meta { font-size: 0.83rem; color: var(--gold); font-family: 'DM Mono', monospace; }
+  .cert-item {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .cert-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: rgba(212,168,83,0.1);
+    border: 1px solid rgba(212,168,83,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .cert-name { font-size: 0.92rem; color: var(--text); }
+  .cert-issuer { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+
+  /* ─── CONTACT ────────────────────────────────────────────── */
+  #contact {
+    background: var(--surface);
+    text-align: center;
+  }
+  .contact-grid {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem;
+    margin-top: 3rem;
+  }
+  .contact-link {
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    padding: 2rem 3rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, transform 0.2s;
+    min-width: 180px;
+  }
+  .contact-link:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .contact-link .icon { font-size: 1.5rem; color: var(--gold); }
+  .contact-link .label { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .contact-link .value { font-size: 0.9rem; }
+
+  /* ─── FOOTER ─────────────────────────────────────────────── */
+  footer {
+    padding: 2rem 5%;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer .foot-name { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 0.95rem; }
+  footer .foot-note { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+
+  /* ─── ANIMATIONS ─────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .about-grid, .edu-cert-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-years { display: none; }
+    nav .nav-links { display: none; }
+    .contact-link { min-width: 140px; padding: 1.5rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SSK</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <p class="hero-tag">↳ Data Analytics & Engineering Professional</p>
+    <h1 class="hero-name">S. Shiva<br/><span>Sai Kumar</span></h1>
+    <p class="hero-title">Building end-to-end data pipelines, enterprise dashboards, and scalable analytics solutions that turn raw data into business decisions.</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item"><span class="dot">●</span> Hyderabad, India</span>
+      <span class="hero-meta-item"><span class="dot">●</span> Deloitte · APCFSS · Accenture</span>
+      <span class="hero-meta-item"><span class="dot">●</span> Python · SQL · Power BI · AWS</span>
+    </div>
+    <a href="#contact" class="hero-cta">Get in Touch →</a>
+  </div>
+  <div class="hero-years">
+    <div class="big-num">7+</div>
+    <div class="big-label">Years of<br/>Experience</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-tag">01 / About</div>
+  <h2 class="section-title reveal">Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a <strong>Data Analytics & Engineering professional</strong> with over 7 years of experience delivering end-to-end data solutions across enterprise and government clients. My work bridges the gap between raw data and meaningful business decisions.</p>
+      <p>At Deloitte, I architect ETL/ELT pipelines and Power BI dashboards that directly inform leadership strategy. At APCFSS, I led data engineering for complex government datasets. At Accenture, I started my journey building operational analytics and performance reporting.</p>
+      <p>I'm proficient in <strong>Python, SQL, Power BI</strong>, and cloud platforms including <strong>AWS</strong>, and I'm actively expanding into Azure Data Factory and Synapse. I combine deep technical skill with a strong ability to translate findings for senior stakeholders.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-box">
+        <div class="stat-num">7+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Major Employers</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Data Pipelines Built</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Certifications</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-tag">02 / Experience</div>
+  <h2 class="section-title reveal">Career Timeline</h2>
+  <div class="exp-timeline">
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Analytics & Insights Assistant Manager</div>
+        <div class="exp-period">April 2025 – April 2026</div>
+      </div>
+      <div class="exp-company">Deloitte · Hyderabad</div>
+      <ul class="exp-bullets">
+        <li>Architected end-to-end ETL/ELT pipeline using Python (Pandas) to ingest, transform, and load complex SPSS survey data into Power BI — enabling automated, high-performance enterprise reporting.</li>
+        <li>Designed and implemented a relational data model (snowflake schema) inside Power BI from scratch — defining table relationships, hierarchies, and schema architecture for scalable survey data modeling.</li>
+        <li>Engineered automated data pipelines converting transformed outputs to Parquet files and loading into Power BI, improving query performance and data accessibility for senior leadership.</li>
+        <li>Built interactive Power BI dashboards with advanced DAX measures, dynamic filtering, drill-through capabilities, and parameterized views — directly informing leadership's ethics and strategic priorities.</li>
+        <li>Translated survey results into data-driven narratives with KPIs and supporting metrics for leadership across member firms and business units.</li>
+        <li>Maintained data quality and integrity across multi-dimensional datasets; documented transformations and schema changes to support data lineage and governance standards.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Data Analyst</div>
+        <div class="exp-period">June 2023 – March 2025</div>
+      </div>
+      <div class="exp-company">APCFSS – Data Analytics Unit · Vijayawada</div>
+      <ul class="exp-bullets">
+        <li>Led data engineering efforts — designing star/snowflake schemas, creating table relationships, and validating data quality across complex multi-source government datasets.</li>
+        <li>Developed Power BI reports and dashboards with advanced DAX expressions, calculated measures, and custom data models aligned with business requirements for government clients.</li>
+        <li>Conducted end-to-end data analysis using Python (Pandas, NumPy) for data cleaning, transformation, statistical analysis, and insight extraction on large-scale project datasets.</li>
+        <li>Managed data ingestion and retrieval via AWS S3 (Boto3) and executed large-scale Python scripts on AWS EC2 — demonstrating cloud data platform proficiency.</li>
+        <li>Engaged stakeholders to define data requirements; presented insights directly to Managing Directors and government decision-makers in an agile delivery model.</li>
+        <li>Mentored junior analysts, fostering a collaborative knowledge-sharing culture and ensuring consistent data standards across the team.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Associate – Operations & Analytics (SME)</div>
+        <div class="exp-period">May 2018 – October 2022</div>
+      </div>
+      <div class="exp-company">Accenture Solutions Pvt. Ltd. · Hyderabad</div>
+      <ul class="exp-bullets">
+        <li>Applied data analysis techniques to investigate and identify root causes of reviewer errors; visualized findings in Power BI dashboards for leadership review.</li>
+        <li>Published accuracy and performance reports using Excel pivot analysis and data analytics, providing data-driven recommendations to improve policy effectiveness.</li>
+        <li>Served as Subject Matter Expert (SME), facilitating knowledge transfer and cross-functional collaboration across operations teams.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-tag">03 / Skills</div>
+  <h2 class="section-title reveal">Technical Arsenal</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-category">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">SQL</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">ETL / Pipelines</div>
+      <div class="skill-tags">
+        <span class="skill-tag">ETL/ELT Automation</span>
+        <span class="skill-tag">Azure Data Factory</span>
+        <span class="skill-tag">AWS Glue</span>
+        <span class="skill-tag">Parquet</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Cloud Platforms</div>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS EC2</span>
+        <span class="skill-tag">AWS S3</span>
+        <span class="skill-tag">Boto3</span>
+        <span class="skill-tag">Azure Synapse</span>
+        <span class="skill-tag">Data Lake</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Databases</div>
+      <div class="skill-tags">
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">Star Schema</span>
+        <span class="skill-tag">Snowflake Schema</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Visualization</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Advanced DAX</span>
+        <span class="skill-tag">Apache Superset</span>
+        <span class="skill-tag">Plotly</span>
+        <span class="skill-tag">Matplotlib</span>
+        <span class="skill-tag">Seaborn</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Python Libraries</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">NumPy</span>
+        <span class="skill-tag">Scikit-Learn</span>
+        <span class="skill-tag">SciPy</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Machine Learning</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Classification Models</span>
+        <span class="skill-tag">Survival Prediction</span>
+        <span class="skill-tag">Feature Engineering</span>
+        <span class="skill-tag">Model Evaluation</span>
+        <span class="skill-tag">Scikit-Learn</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Data Governance</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Metadata Management</span>
+        <span class="skill-tag">Data Lineage</span>
+        <span class="skill-tag">Data Cataloging</span>
+        <span class="skill-tag">Data Quality</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Tools & Other</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Agentic AI</span>
+        <span class="skill-tag">LLM Orchestration</span>
+        <span class="skill-tag">Feedback Analysis</span>
+        <span class="skill-tag">Jupyter Lab</span>
+        <span class="skill-tag">DBeaver</span>
+        <span class="skill-tag">WinSCP</span>
+        <span class="skill-tag">Google Colab</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-tag">04 / Projects</div>
+  <h2 class="section-title reveal">ML & AI Work</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-number">01</div>
+      <div class="project-type">Machine Learning · Healthcare</div>
+      <div class="project-title">Inpatient Survival Prediction</div>
+      <p class="project-desc">Built a classification model to predict inpatient survival outcomes using clinical data. Involved end-to-end ML pipeline development — from data collection and preprocessing to model training, evaluation, and interpretation. Focused on high-stakes accuracy with metrics tuned for clinical applicability.</p>
+      <div class="project-tech">
+        <span>Python</span>
+        <span>Scikit-Learn</span>
+        <span>Classification</span>
+        <span>Pandas</span>
+        <span>Feature Engineering</span>
+        <span>Model Evaluation</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">02</div>
+      <div class="project-type">Data Engineering · Python</div>
+      <div class="project-title">Large-Scale Data Cleaning & Transformation</div>
+      <p class="project-desc">Designed and executed comprehensive data cleaning workflows using Python across multiple large-scale datasets. Addressed missing values, outlier detection, schema normalization, deduplication, and type standardisation — ensuring downstream model and dashboard reliability.</p>
+      <div class="project-tech">
+        <span>Python</span>
+        <span>Pandas</span>
+        <span>NumPy</span>
+        <span>Data Wrangling</span>
+        <span>Outlier Detection</span>
+        <span>Schema Normalization</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">03</div>
+      <div class="project-type">Agentic AI · NLP</div>
+      <div class="project-title">Agentic AI Model for Feedback Analysis</div>
+      <p class="project-desc">Architected an agentic AI system to autonomously analyse feedback data — extracting themes, sentiments, and actionable insights without manual intervention. The agent orchestrates multiple reasoning steps to produce structured, human-readable reports for business stakeholders.</p>
+      <div class="project-tech">
+        <span>Agentic AI</span>
+        <span>LLM Orchestration</span>
+        <span>NLP</span>
+        <span>Python</span>
+        <span>Sentiment Analysis</span>
+        <span>Automated Reporting</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION & CERTS -->
+<section id="education">
+  <div class="section-tag">05 / Education & Certifications</div>
+  <h2 class="section-title reveal">Academic Background</h2>
+  <div class="edu-cert-grid">
+    <div>
+      <h3 style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;" class="reveal">Education</h3>
+      <div class="edu-item reveal">
+        <div class="edu-degree">PG Diploma in Data Science & Engineering</div>
+        <div class="edu-school">Great Lakes Institute of Management · Bangalore</div>
+        <div class="edu-meta">2021 – 2022 &nbsp;·&nbsp; Grade: Excellent</div>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-degree">B.Tech — Electronics & Communication Engineering</div>
+        <div class="edu-school">Jayamukhi Institute of Technological Sciences · Warangal</div>
+        <div class="edu-meta">2013 – 2017 &nbsp;·&nbsp; 66.66%</div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;" class="reveal">Certifications</h3>
+      <div class="cert-item reveal">
+        <div class="cert-icon">🎓</div>
+        <div>
+          <div class="cert-name">Data Science & Engineering</div>
+          <div class="cert-issuer">Great Learning</div>
+        </div>
+      </div>
+      <div class="cert-item reveal" style="margin-top:1.5rem;">
+        <div class="cert-icon">🤖</div>
+        <div>
+          <div class="cert-name">Architecting Agentic AI</div>
+          <div class="cert-issuer">UNext Learning</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-tag">06 / Contact</div>
+  <h2 class="section-title reveal" style="text-align:center;">Let's Connect</h2>
+  <p class="reveal" style="color:var(--muted);max-width:480px;margin:0 auto;text-align:center;">Open to exciting opportunities in data engineering, analytics, and cloud data platforms. Feel free to reach out.</p>
+  <div class="contact-grid">
+    <a href="mailto:shivasai.siddoju@gmail.com" class="contact-link reveal">
+      <span class="icon">✉️</span>
+      <span class="label">Email</span>
+      <span class="value">shivasai.siddoju@gmail.com</span>
+    </a>
+    <a href="tel:+918801893393" class="contact-link reveal">
+      <span class="icon">📞</span>
+      <span class="label">Phone</span>
+      <span class="value">+91-8801893393</span>
+    </a>
+    <a href="http://www.linkedin.com/in/shivasaikumarsiddoju" target="_blank" class="contact-link reveal">
+      <span class="icon">💼</span>
+      <span class="label">LinkedIn</span>
+      <span class="value">shivasaikumarsiddoju</span>
+    </a>
+    <div class="contact-link reveal" style="cursor:default;">
+      <span class="icon">📍</span>
+      <span class="label">Location</span>
+      <span class="value">Hyderabad, India</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="foot-name">S. Shiva Sai Kumar</span>
+  <span class="foot-note">Data Analytics & Engineering Professional · Hyderabad, India</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
